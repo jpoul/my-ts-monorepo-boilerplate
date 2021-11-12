@@ -5,7 +5,8 @@
   "scripts": {
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "build": "esbuild src/index.ts --define:process.env.NODE_ENV=\\\"production\\\" --bundle --platform=node --outfile=lib/index.js",
-    "postbuild": "tsc --build"
+    "postbuild": "tsc --build",
+    "bootstrap": "lerna exec npm install && lerna link && lerna bootstrap"
   },
   "name": "root",
   "private": true,
