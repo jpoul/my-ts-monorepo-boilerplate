@@ -17,5 +17,6 @@
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "build": "esbuild src/index.ts --define:process.env.NODE_ENV=\\\"production\\\" --bundle --minify --sourcemap --platform=node --outfile=lib/index.js",
     "postbuild": "tsc --declaration --emitDeclarationOnly"
-  }
+  },
+  "gitHead": "4669b98f6fc848198a95b53b0ee1ea76dbabb794"
 }

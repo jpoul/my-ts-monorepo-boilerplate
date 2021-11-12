@@ -20,5 +20,6 @@
   },
   "dependencies": {
     "@boilerplate/sample": "^1.0.0"
-  }
+  },
+  "gitHead": "4669b98f6fc848198a95b53b0ee1ea76dbabb794"
 }
