@@ -21,7 +21,7 @@
     },
     "exclude": ["node_modules", "**/*/lib", "**/*/dist"],
     "paths": {
-        "@boilerplate/sample": ["sample/src"],
-        "@boilerplate/sampleConsumer": ["sampleConsumer/src"]
+        "@my-ts-monorepo-boilerplate/sample": ["sample/src"],
+        "@my-ts-monorepo-boilerplate/sampleConsumer": ["sampleConsumer/src"]
     }
 }

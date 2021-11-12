@@ -1,5 +1,5 @@
 {
-  "name": "@boilerplate/sampleconsumer",
+  "name": "@my-ts-monorepo-boilerplate/sampleconsumer",
   "version": "1.0.2",
   "description": "Sample package consumer",
   "author": "John Pouliezos <jpouliezos@gmail.com>",
@@ -19,7 +19,7 @@
     "postbuild": "tsc --declaration --emitDeclarationOnly"
   },
   "dependencies": {
-    "@boilerplate/sample": "^1.0.0"
+    "@my-ts-monorepo-boilerplate/sample": "^1.0.0"
   },
   "gitHead": "4669b98f6fc848198a95b53b0ee1ea76dbabb794"
 }
