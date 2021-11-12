@@ -1,0 +1,24 @@
+{
+  "name": "@boilerplate/sampleconsumer",
+  "version": "1.0.0",
+  "description": "Sample package consumer",
+  "author": "John Pouliezos <jpouliezos@gmail.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "types": "lib/index.d.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "build": "esbuild src/index.ts --define:process.env.NODE_ENV=\\\"production\\\" --bundle --minify --sourcemap --platform=node --outfile=lib/index.js",
+    "postbuild": "tsc --declaration --emitDeclarationOnly"
+  },
+  "dependencies": {
+    "@boilerplate/sample": "^1.0.0"
+  }
+}

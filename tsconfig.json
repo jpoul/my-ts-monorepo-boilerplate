@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./packages",
+        "module": "commonjs",
+        "declaration": true,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "es6",
+        "sourceMap": true,
+        "lib": [
+            "es6"
+        ],
+        "strict": true,
+        "moduleResolution": "Node",
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "isolatedModules": true
+    },
+    "exclude": ["node_modules", "**/*/lib", "**/*/dist"],
+    "paths": {
+        "@boilerplate/sample": ["sample/src"],
+        "@boilerplate/sampleConsumer": ["sampleConsumer/src"]
+    }
+}

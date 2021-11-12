@@ -1,0 +1,3 @@
+# `sample`
+
+> Sample package configuration
