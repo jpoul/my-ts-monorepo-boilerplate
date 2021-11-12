@@ -1,6 +1,6 @@
 {
   "name": "@my-ts-monorepo-boilerplate/sample",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Sample package configuration",
   "author": "John Pouliezos <jpouliezos@gmail.com>",
   "homepage": "",
