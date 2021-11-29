@@ -20,8 +20,5 @@
         "isolatedModules": true
     },
     "exclude": ["node_modules", "**/*/lib", "**/*/dist"],
-    "paths": {
-        "@my-ts-monorepo-boilerplate/sample": ["sample/src"],
-        "@my-ts-monorepo-boilerplate/sampleConsumer": ["sampleConsumer/src"]
-    }
+    "paths": {}
 }

@@ -4,9 +4,10 @@
   ],
   "scripts": {
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "build": "esbuild src/index.ts --define:process.env.NODE_ENV=\\\"production\\\" --bundle --platform=node --outfile=lib/index.js",
-    "postbuild": "tsc --build",
-    "bootstrap": "lerna exec npm install && lerna link && lerna bootstrap"
+    "build": "node ../../builder.js run production",
+    "lerna:link": "lerna link",
+    "lerna:link-convert": "lerna link convert",
+    "lerna:bootstrap": "lerna bootstrap --hoist --force-local"
   },
   "name": "root",
   "private": true,
@@ -16,6 +17,10 @@
     "@typescript-eslint/eslint-plugin": "^5.3.1",
     "@typescript-eslint/parser": "^5.3.1",
     "esbuild": "^0.13.13",
+    "esbuild-plugin-clean": "^0.5.0",
+    "esbuild-plugin-d.ts": "^1.0.6",
+    "esbuild-plugin-node-externals": "^0.2.0",
+    "esbuild-plugin-tsc": "^0.3.0",
     "eslint": "^8.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
@@ -23,7 +28,9 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.1",
     "lerna": "^4.0.0",
+    "lerna-templater": "^1.4.2",
     "prettier": "^2.4.1",
+    "typeconv": "^1.7.0",
     "typescript": "^4.4.4"
   },
   "dependencies": {}
