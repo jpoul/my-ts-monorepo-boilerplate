@@ -17,6 +17,6 @@
         "skipFiles": [
             "<node_internals>/**"
         ],
-        "cwd": "${workspaceFolder}\\packages\\utils"
+        "cwd": "${workspaceFolder}\\packages\\_template_"
     }]
 }

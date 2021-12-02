@@ -1,63 +1,77 @@
 const { argv } = require('process');
 
 var builder = (function () {
-    const p = require('path')
     const { esbuildPluginNodeExternals } = require('esbuild-plugin-node-externals')
     const { build: esbuild } = require('esbuild')
     const clean = require('esbuild-plugin-clean')
-    const esbuildPluginTsc = require('esbuild-plugin-tsc');
-    const { dtsPlugin } = require("esbuild-plugin-d.ts");
+    const gen = require('dts-bundle-generator')
+    const fs = require("fs")
+    const path = require("path")
+
+    const getAllFiles = function (dirPath, arrayOfFiles) {
+        files = fs.readdirSync(dirPath)
+        arrayOfFiles = arrayOfFiles || []
+        files.forEach(function (file) {
+            if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+                arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles)
+            } else {
+                arrayOfFiles.push(path.join(dirPath, "/", file))
+            }
+        })
+        return arrayOfFiles
+    }
 
     const paths = {
-        package: p.join(process.cwd(), 'package.json'),
-        sourceFolder: p.join(process.cwd(), 'src'),
-        outputFolder: p.join(process.cwd(), 'lib'),
-        tsConfig: p.join(process.cwd(), 'tsconfig.json')
+        package: path.join(process.cwd(), 'package.json'),
+        sourceFolder: path.join(process.cwd(), 'src'),
+        outputFolder: path.join(process.cwd(), 'dist'),
+        tsConfig: path.join(process.cwd(), 'tsconfig.json'),
     }
-    paths.entryPoint = p.join(paths.sourceFolder, 'index.ts')
-    paths.outfile = p.join(paths.outputFolder, 'index.js')
-    console.log(paths.tsConfig)
-    const config = {
-        entryPoints: [paths.entryPoint],
-        minify: true,
-        sourcemap: true,
-        platform: "node",
-        bundle: true,
-        outfile: paths.outfile,
-        plugins: [
-            clean.default({
-                patterns: [p.join(paths.outputFolder, '*')]
-            }),
-            esbuildPluginNodeExternals({
-                packagePaths: paths.package
-            }),
-            // esbuildPluginTsc({
-            //     tsconfigPath: paths.tsConfig
-            //     // If true, force compilation with tsc
-            // })
-            dtsPlugin({ tsConfig: paths.tsConfig })
-        ],
-        logLevel: "debug"
-    }
+    paths.indexFilePath = path.join(paths.sourceFolder, 'index.ts')
+    paths.declarationFilePath = path.join(paths.outputFolder, 'index.d.ts')
 
-    function build(env) {
+    function getBuildConfig(env) {
+        const config = {
+            entryPoints: getAllFiles(paths.sourceFolder),
+            minify: true,
+            sourcemap: false,
+            platform: "node",
+            bundle: true,
+            outdir: paths.outputFolder,
+            plugins: [
+                clean.default({
+                    patterns: [path.join(paths.outputFolder, '*')]
+                }),
+                esbuildPluginNodeExternals({
+                    packagePaths: paths.package
+                })
+            ],
+            logLevel: "debug"
+        }
         if (env) {
             config.define = { "process.env.NODE_ENV": env }
         }
-        esbuild(config).catch((error) => {
-            console.error(error)
-            process.exit(1)
+        return config
+    }
+
+    function build(env) {
+        esbuild(getBuildConfig(env)).then(() => {
+            const dtsBundle = gen.generateDtsBundle([{
+                filePath: paths.indexFilePath,
+                outFile: paths.declarationFilePath
+            }])
+            fs.writeFileSync(paths.declarationFilePath, dtsBundle[0])
         })
+
     }
 
     return {
         paths: paths,
-        config: config,
+        getConfig: getBuildConfig,
         build: build
     }
 })();
 
-//console.table(config)
 if (argv[2] === 'run') {
     builder.build(argv[3])
 }
