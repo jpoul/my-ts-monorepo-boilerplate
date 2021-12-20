@@ -1,14 +1,17 @@
+const { check } = require('prettier');
 const { argv } = require('process');
 
 var builder = (function () {
     const { esbuildPluginNodeExternals } = require('esbuild-plugin-node-externals')
     const { build: esbuild } = require('esbuild')
     const clean = require('esbuild-plugin-clean')
+    const copy = require('esbuild-plugin-copy')
     const gen = require('dts-bundle-generator')
     const fs = require("fs")
     const path = require("path")
+    const ts = require("typescript")
 
-    const getAllFiles = function (dirPath, arrayOfFiles) {
+    const getAllFiles = function (dirPath, arrayOfFiles, filter) {
         files = fs.readdirSync(dirPath)
         arrayOfFiles = arrayOfFiles || []
         files.forEach(function (file) {
@@ -24,26 +27,28 @@ var builder = (function () {
     const paths = {
         package: path.join(process.cwd(), 'package.json'),
         sourceFolder: path.join(process.cwd(), 'src'),
+        sourceFile: path.join(process.cwd(), 'src/index.ts'),
         outputFolder: path.join(process.cwd(), 'dist'),
+        outputFile: path.join(process.cwd(), 'dist/index.js'),
+        outputDeclarationFile: path.join(process.cwd(), 'dist/index.d.ts'),
         tsConfig: path.join(process.cwd(), 'tsconfig.json'),
+        jsonFiles: path.join(process.cwd(), 'src/**/*.json')
     }
-    paths.indexFilePath = path.join(paths.sourceFolder, 'index.ts')
-    paths.declarationFilePath = path.join(paths.outputFolder, 'index.d.ts')
 
     function getBuildConfig(env) {
         const config = {
-            entryPoints: getAllFiles(paths.sourceFolder),
+            entryPoints: [paths.sourceFile],
             minify: true,
             sourcemap: false,
             platform: "node",
             bundle: true,
-            outdir: paths.outputFolder,
+            outfile: paths.outputFile,
             plugins: [
                 clean.default({
                     patterns: [path.join(paths.outputFolder, '*')]
                 }),
                 esbuildPluginNodeExternals({
-                    packagePaths: paths.package
+                    // packagePaths: paths.package
                 })
             ],
             logLevel: "debug"
@@ -54,13 +59,21 @@ var builder = (function () {
         return config
     }
 
-    function build(env) {
+    function build(env, skipDefinitions = false) {
         esbuild(getBuildConfig(env)).then(() => {
-            const dtsBundle = gen.generateDtsBundle([{
-                filePath: paths.indexFilePath,
-                outFile: paths.declarationFilePath
-            }])
-            fs.writeFileSync(paths.declarationFilePath, dtsBundle[0])
+            if (skipDefinitions === false) {
+                const dtsBundle = gen.generateDtsBundle([{
+                    filePath: paths.sourceFile,
+                    outFile: paths.outputDeclarationFile,
+                    output: {
+                        noBanner: true
+                    }
+                }], {
+                    followSymlinks: false,
+                    exportReferencedTypes: false
+                })
+                fs.writeFileSync(paths.outputDeclarationFile, dtsBundle[0])
+            }
         })
 
     }
@@ -73,5 +86,5 @@ var builder = (function () {
 })();
 
 if (argv[2] === 'run') {
-    builder.build(argv[3])
+    builder.build(argv[3], argv[4] || false)
 }

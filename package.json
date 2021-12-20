@@ -3,36 +3,34 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "build": "node ../../builder.js run production",
+    "build:all": "lerna run build",
+    "lint:all": "lerna run lint",
     "lerna:link": "lerna link",
-    "lerna:link-convert": "lerna link convert",
-    "lerna:bootstrap": "lerna bootstrap --hoist --force-local"
+    "lerna:bootstrap": "lerna bootstrap",
+    "lerna:create": "lerna-templater"
   },
   "name": "root",
   "private": true,
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
-    "@types/node": "^16.11.7",
-    "@typescript-eslint/eslint-plugin": "^5.3.1",
-    "@typescript-eslint/parser": "^5.3.1",
-    "dts-bundle-generator": "^6.1.0",
-    "esbuild": "^0.13.13",
+    "@typescript-eslint/eslint-plugin": "^5.6.0",
+    "@typescript-eslint/parser": "^5.6.0",
+    "dts-bundle-generator": "^6.2.0",
+    "esbuild": "^0.14.2",
     "esbuild-plugin-clean": "^0.5.0",
-    "esbuild-plugin-d.ts": "^1.0.6",
+    "esbuild-plugin-copy": "^0.3.0",
     "esbuild-plugin-node-externals": "^0.2.0",
-    "esbuild-plugin-tsc": "^0.3.0",
-    "eslint": "^8.2.0",
+    "prettier": "^2.4.1",
+    "eslint": "^8.4.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2",
     "lerna": "^4.0.0",
-    "lerna-templater": "^1.4.2",
-    "prettier": "^2.4.1",
-    "typeconv": "^1.7.0",
-    "typescript": "^4.4.4"
+    "lerna-templater": "^1.4.2"
   },
   "dependencies": {}
 }
