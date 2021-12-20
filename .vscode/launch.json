@@ -18,5 +18,19 @@
             "<node_internals>/**"
         ],
         "cwd": "${workspaceFolder}\\packages\\_template_"
-    }]
+    }, {
+        "type": "node",
+        "request": "launch",
+        "name": "Sample TS project debug",
+        "runtimeExecutable": "npm",
+        "runtimeArgs": [
+            "run-script",
+            "dev",
+            "--preserve-symlinks"
+        ],
+        "skipFiles": [
+            "<node_internals>/**"
+        ],
+        "cwd": "${workspaceFolder}/packages/package-sample"
+    }, ]
 }
